@@ -1,3 +1,22 @@
+h1 {
+    text-align: center;
+}
+
+main {
+    margin-top: 5%;
+    margin-left: 15%;
+}
+
+.player-info {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.player {
+    padding: 5px;
+}
 
 #board {
     margin: auto;
@@ -15,7 +34,15 @@
  
 .square {
     border: 1px solid #000;
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     text-align: center;
+}
+
+
+#start-button, #reset-button {
+    padding: 10px 20px;
+    font-size: 20px;
+    margin-top: 20px;
+
 }

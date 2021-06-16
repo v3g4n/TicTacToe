@@ -8,13 +8,24 @@
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
+  <h1>Tic Tac Toe</h1>
   <main>
     <div id="player-info">
-      <label for="player-one">Player 1 Name:</label>
-      <input type="text" id="player-one">
-      <label for="player-two">Player 2 Name:</label>
-      <input type="text" id="player-two">
-      <button id="start-button">Start</button>
+      <div class="player">
+        <label for="player-one">Player 1 (X):</label>
+        <input type="text" id="player-one" placeholder="Player 1 name">
+      </div>
+      <div class="player">
+        <label for="player-two">Player 2 (O):</label>
+        <input type="text" id="player-two" placeholder="Player 2 name">
+      </div>
+      <div>
+        <button id="start-button">Start</button>
+        <button id="reset-button">Reset</button>
+      </div>
+    </div>
+    <div id="game-msg">
+      <h3 id="announcement">Please enter the names of the players, then click Start to start the game</h3>
     </div>
     <div id="board">
       <div class="row" id="top-row">
