@@ -1,3 +1,8 @@
+window.onload = () => {
+    document.getElementById('player-one').value = '';
+    document.getElementById('player-two').value = '';
+}
+
 const announcement = document.getElementById('announcement');
 
 
@@ -7,7 +12,7 @@ const Player = (name, symbol) => {
             Gameboard.board[targetSquareIdx] = symbol;
             Gameboard.renderBoard();
         } else {
-            // Pick a different square!
+            //
         }
     }
     return { name, symbol, move }
@@ -51,12 +56,14 @@ const Gameboard = (() => {
 
 const startButton = document.getElementById('start-button');
 startButton.addEventListener('click', (e) => {
-    const playerOneName = document.getElementById('player-one').value
-    const playerTwoName = document.getElementById('player-two').value
+    console.log(`Gameboard: ${Gameboard.board}`)
+    const playerOneName = playerOneInput.value
+    const playerTwoName = playerTwoInput.value
     if (playerOneName && playerTwoName) {
         Game.playGame(playerOneName, playerTwoName);
-        // document.getElementById('player-one').value = '';
-        // document.getElementById('player-two').value = '';
+        playerOneInput.style.visibility = 'hidden';
+        playerTwoInput.style.visibility = 'hidden';
+        startButton.style.visibility = 'hidden';
     } else {
         announcement.innerHTML = "Please enter the names of the players, then click Start to start the game"
     }
@@ -64,10 +71,16 @@ startButton.addEventListener('click', (e) => {
 
 const resetButton = document.getElementById('reset-button');
 resetButton.addEventListener('click', () => {
+    location.reload();
     document.getElementById('player-one').value = '';
     document.getElementById('player-two').value = '';
-    Gameboard.resetBoard();
-    Gameboard.renderBoard();
+    // Gameboard.resetBoard();
+    // Gameboard.renderBoard();
+    // startButton.style.visibility = 'visible';
+    // playerOneInput.style.visibility = 'visible';
+    // playerTwoInput.style.visibility = 'visible';
+    // announcement.innerHTML = "Please enter the names of the players, then click Start to start the game"
+    // document.getElementById('board').removeEventListener('click', handleClick);
 })
 
 
@@ -94,6 +107,7 @@ const Game = ((playerOneName, playerTwoName) => {
         
         function handleClick (e) {
             let targetSquare = e.target;
+            console.log(`Gameboard: ${Gameboard.board}`)
             if (Gameboard.isWinner()) {
                 console.log(`${winner.name} is the winner!`) 
                 announcement.innerHTML = `${winner.name} has won!`
@@ -101,10 +115,12 @@ const Game = ((playerOneName, playerTwoName) => {
                 console.log('Game has ended in a tie!') // never gets logged
                 announcement.innerHTML = `The game has ended in a tie!` 
             } else if (targetSquare.innerHTML === 'X' || targetSquare.innerHTML === 'O') {
-                announcement.innerHTML = `Please pick a different square, ${currentPlayer.name} - You play with ${currentPlayer.symbol}`
+                announcement.innerHTML = `Please pick a different square, 
+                ${currentPlayer.name} - You play with ${currentPlayer.symbol}`
             } else {
                 let boardIndex = Gameboard.boardCoords.indexOf(targetSquare.id);
                 currentPlayer.move(boardIndex);
+                console.log(`Gameboard: ${Gameboard.board}`)
                 if (Gameboard.isWinner()) {
                     winner = currentPlayer;
                     announcement.innerHTML = `${winner.name} has won!`
@@ -114,9 +130,13 @@ const Game = ((playerOneName, playerTwoName) => {
                     // Players take turns
                     if (currentPlayer === playerOne) {
                         currentPlayer = playerTwo;
+                        playerTwoDiv.classList.add('active');
+                        playerOneDiv.classList.remove('active');
                         nextTurn = true;
                     } else {
                         currentPlayer = playerOne;
+                        playerOneDiv.classList.add('active');
+                        playerTwoDiv.classList.remove('active');
                         nextTurn = true;
                     }
                     announcement.innerHTML = `It is ${currentPlayer.name}'s turn, playing with ${currentPlayer.symbol}`;
@@ -138,3 +158,21 @@ const Game = ((playerOneName, playerTwoName) => {
     return { playGame, winner }
 })()
 
+const playerOneDiv = document.getElementById('player1');
+const playerTwoDiv = document.getElementById('player2');
+
+const playerOneInput = document.getElementById('player-one');
+playerOneInput.addEventListener('input', (e) => {
+    playerOneInput.previousElementSibling.innerHTML = e.target.value;
+    if (!e.target.value) {
+        playerOneInput.previousElementSibling.innerHTML = 'Player 1:'
+    }
+})
+
+const playerTwoInput = document.getElementById('player-two');
+playerTwoInput.addEventListener('input', (e) => {
+    playerTwoInput.previousElementSibling.innerHTML = e.target.value;
+    if (!e.target.value) {
+        playerTwoInput.previousElementSibling.innerHTML = 'Player 2:'
+    }
+})
